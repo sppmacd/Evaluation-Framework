@@ -523,7 +523,7 @@ class EvaluationManager(AbstractEvaluationManager):
         if exists:
             results_df = pd.read_csv(
                 self.comparison_filename,
-                "\s+",
+                sep=r"\s+",
                 names=comparison_columns,
                 encoding="utf-8",
                 header=0,
@@ -568,7 +568,7 @@ class EvaluationManager(AbstractEvaluationManager):
 
         # start the comparison
         effective_comparison_df = pd.DataFrame(columns=comparison_columns)
-        rating_dataframe = pd.DataFrame(columns=ranking_columns)
+        rating_rows = list()
 
         if compare_with == "_all":
             compare_with = test_names
@@ -644,7 +644,7 @@ class EvaluationManager(AbstractEvaluationManager):
                                     else -1
                                 )
 
-                                rating_dataframe = rating_dataframe.append(
+                                rating_rows.append(
                                     {
                                         "task_name": task,
                                         "gold_standard_file": gold_standard_file,
@@ -656,10 +656,10 @@ class EvaluationManager(AbstractEvaluationManager):
                                         "relative_total": len(
                                             set(sorted_metric_results)
                                         ),
-                                    },
-                                    ignore_index=True,
+                                    }
                                 )
 
+            rating_dataframe = pd.DataFrame(rating_rows, columns=ranking_columns)
             effective_comparison_df.to_csv(
                 self.result_directory + "/comparison_values.csv",
                 sep=" ",

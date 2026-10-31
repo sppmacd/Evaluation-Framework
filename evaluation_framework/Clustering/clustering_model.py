@@ -40,7 +40,7 @@ class ClusteringModel(AbstractModel):
             self.model = (
                 "AgglomerativeClustering(n_clusters="
                 + str(n_clusters)
-                + ", affinity='"
+                + ", metric='"
                 + metric
                 + "', linkage='average')"
             )
@@ -50,7 +50,7 @@ class ClusteringModel(AbstractModel):
             self.model = (
                 "AgglomerativeClustering(n_clusters="
                 + str(n_clusters)
-                + ", affinity='euclidean', linkage='ward')"
+                + ", metric='euclidean', linkage='ward')"
             )
             self.name = "Ward hierarchical clustering"
             self.configuration = "metric=" + metric + ", n_clusters=" + str(n_clusters)
@@ -96,7 +96,7 @@ class ClusteringModel(AbstractModel):
 
         ignoredLabels = [n_clusters] * len(ignored)
         labels = np.concatenate((labels, ignoredLabels), axis=0)
-        labels = np.array(labels, dtype=np.float_)
+        labels = np.array(labels, dtype=float)
 
         if self.debugging_mode:
             print(self.name + " Number of clusters : " + str(n_clusters))

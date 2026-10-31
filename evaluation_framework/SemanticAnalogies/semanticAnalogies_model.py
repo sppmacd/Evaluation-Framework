@@ -57,9 +57,9 @@ class SemanticAnalogiesModel(AbstractModel):
             )
             dist = np.dot(W, pred_vec.T)
 
-            dist[ind1[j]] = -np.Inf
-            dist[ind2[j]] = -np.Inf
-            dist[ind3[j]] = -np.Inf
+            dist[ind1[j]] = -np.inf
+            dist[ind2[j]] = -np.inf
+            dist[ind3[j]] = -np.inf
 
             predictions[j] = np.argsort(-dist, axis=0)[: self.top_k].T
 

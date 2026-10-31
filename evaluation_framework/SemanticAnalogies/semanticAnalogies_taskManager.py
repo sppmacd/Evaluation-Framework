@@ -8,8 +8,8 @@ from evaluation_framework.SemanticAnalogies.semanticAnalogies_model import (
 from evaluation_framework.abstract_taskManager import AbstractTaskManager
 from numpy import mean
 import numpy as np
-from _collections import defaultdict
-from pathlib2 import Path
+from collections import defaultdict
+from pathlib import Path
 from typing import List, Callable
 
 task_name = "SemanticAnalogies"

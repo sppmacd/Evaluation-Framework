@@ -199,7 +199,7 @@ class ClassificationDataManager(DataManager):
     """
 
     def read_file(self, filename, columns):
-        return pd.read_csv(filename, "\t", usecols=columns, encoding="utf-8")
+        return pd.read_csv(filename, sep="\t", usecols=columns, encoding="utf-8")
 
     """
     It intersects the input file which contains the vectors and the file used as gold standard.
@@ -235,7 +235,7 @@ class ClassificationDataManager(DataManager):
         gold.rename(columns={column_key: "name"}, inplace=True)
         gold.rename(columns={column_score: "label"}, inplace=True)
 
-        merged = pd.DataFrame(columns=self.create_header(vector_size))
+        merged = list()
         ignored = list()
 
         for row in gold.itertuples():
@@ -247,10 +247,11 @@ class ClassificationDataManager(DataManager):
                 new_row["name"] = row.name
                 new_row["label"] = row.label
 
-                merged = merged.append(new_row, ignore_index=True)
+                merged.append(new_row)
             else:
                 ignored.append(row.name)
 
+        merged = pd.DataFrame(merged, columns=self.create_header(vector_size))
         ignored_df = pd.DataFrame(ignored, columns=["name"])
         return merged, ignored_df
 
@@ -292,7 +293,7 @@ class ClusteringDataManager(DataManager):
     def read_file(self, filename, columns):
         return pd.read_csv(
             filename,
-            delim_whitespace=True,
+            sep=r"\s+",
             usecols=columns,
             index_col=False,
             skipinitialspace=True,
@@ -334,8 +335,8 @@ class ClusteringDataManager(DataManager):
         gold.rename(columns={column_key: "name"}, inplace=True)
         gold.rename(columns={column_score: "cluster"}, inplace=True)
 
-        merged = pd.DataFrame(columns=self.create_header(vector_size))
-        ignored = pd.DataFrame(columns=["name", "cluster"])
+        merged = list()
+        ignored = list()
 
         for row in gold.itertuples():
             encoded_name = self._to_hdf5_key(row.name)
@@ -346,12 +347,12 @@ class ClusteringDataManager(DataManager):
                 new_row["name"] = row.name
                 new_row["cluster"] = row.cluster
 
-                merged = merged.append(new_row, ignore_index=True)
+                merged.append(new_row)
             else:
-                ignored.append(
-                    {"name": row.name, "cluster": row.cluster}, ignore_index=True
-                )
+                ignored.append({"name": row.name, "cluster": row.cluster})
 
+        merged = pd.DataFrame(merged, columns=self.create_header(vector_size))
+        ignored = pd.DataFrame(ignored, columns=["name", "cluster"])
         return merged, ignored
 
     """
@@ -392,7 +393,7 @@ class DocumentSimilarityDataManager(DataManager):
     def read_file(self, filename, columns):
         return pd.read_csv(
             filename,
-            ",",
+            sep=",",
             usecols=columns,
             index_col=False,
             skipinitialspace=True,
@@ -426,7 +427,7 @@ class DocumentSimilarityDataManager(DataManager):
         vector_file = h5py.File(vector_filename, "r")
         vector_group = vector_file["Vectors"]
 
-        merged = pd.DataFrame(columns=self.create_header(vector_size))
+        merged = list()
         ignored = list()
 
         entities = self.get_entities(goldStandard_filename)
@@ -441,10 +442,11 @@ class DocumentSimilarityDataManager(DataManager):
                 new_row["name"] = row.name
                 new_row["weight"] = row.weight
 
-                merged = merged.append(new_row, ignore_index=True)
+                merged.append(new_row)
             else:
                 ignored.append(row.name)
 
+        merged = pd.DataFrame(merged, columns=self.create_header(vector_size))
         ignored_df = pd.DataFrame(ignored, columns=["name"])
 
         return merged, ignored_df
@@ -561,7 +563,7 @@ class EntityRelatednessDataManager(DataManager):
         vector_file = h5py.File(vector_filename, "r")
         vector_group = vector_file["Vectors"]
 
-        merged = pd.DataFrame(columns=self.create_header(vector_size))
+        merged = list()
         ignored = list()
 
         if goldStandard_data is None:
@@ -576,10 +578,11 @@ class EntityRelatednessDataManager(DataManager):
                 new_row = dict(zip(np.arange(vector_size), values))
                 new_row["name"] = row.name
 
-                merged = merged.append(new_row, ignore_index=True)
+                merged.append(new_row)
             else:
                 ignored.append(row.name)
 
+        merged = pd.DataFrame(merged, columns=self.create_header(vector_size))
         ignored_df = pd.DataFrame(ignored, columns=["name"])
 
         return merged, ignored_df
@@ -621,7 +624,7 @@ class RegressionDataManager(DataManager):
     """
 
     def read_file(self, filename, columns):
-        return pd.read_csv(filename, "\t", usecols=columns, encoding="utf-8")
+        return pd.read_csv(filename, sep="\t", usecols=columns, encoding="utf-8")
 
     """
     It intersects the input file which contains the vectors and the file used as gold standard.
@@ -657,7 +660,7 @@ class RegressionDataManager(DataManager):
         gold.rename(columns={column_key: "name"}, inplace=True)
         gold.rename(columns={column_score: "label"}, inplace=True)
 
-        merged = pd.DataFrame(columns=self.create_header(vector_size))
+        merged = list()
         ignored = list()
 
         for row in gold.itertuples():
@@ -669,10 +672,11 @@ class RegressionDataManager(DataManager):
                 new_row["name"] = row.name
                 new_row["label"] = row.label
 
-                merged = merged.append(new_row, ignore_index=True)
+                merged.append(new_row)
             else:
                 ignored.append(row.name)
 
+        merged = pd.DataFrame(merged, columns=self.create_header(vector_size))
         ignored_df = pd.DataFrame(ignored, columns=["name"])
         return merged, ignored_df
 

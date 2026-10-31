@@ -55,7 +55,7 @@ class DataManager(AbstractDataManager):
     def read_vector_file(self, vector_filename, vec_size):
         local_vectors = pd.read_csv(
             vector_filename,
-            "\s+",
+            sep=r"\s+",
             names=self.create_header(vec_size),
             encoding="utf-8",
             index_col=False,
@@ -190,7 +190,7 @@ class ClassificationDataManager(DataManager):
     """
 
     def read_file(self, filename, columns):
-        return pd.read_csv(filename, "\t", usecols=columns, encoding="utf-8")
+        return pd.read_csv(filename, sep="\t", usecols=columns, encoding="utf-8")
 
     """
     It intersects the input file which contains the vectors and the file used as gold standard.
@@ -255,7 +255,7 @@ class ClusteringDataManager(DataManager):
     def read_file(self, filename, columns):
         return pd.read_csv(
             filename,
-            delim_whitespace=True,
+            sep=r"\s+",
             usecols=columns,
             index_col=False,
             skipinitialspace=True,
@@ -326,7 +326,7 @@ class DocumentSimilarityDataManager(DataManager):
     def read_file(self, filename, columns):
         return pd.read_csv(
             filename,
-            ",",
+            sep=",",
             usecols=columns,
             index_col=False,
             skipinitialspace=True,
@@ -500,7 +500,7 @@ class RegressionDataManager(DataManager):
     """
 
     def read_file(self, filename, columns):
-        return pd.read_csv(filename, "\t", usecols=columns, encoding="utf-8")
+        return pd.read_csv(filename, sep="\t", usecols=columns, encoding="utf-8")
 
     """
     It intersects the input file which contains the vectors and the file used as gold standard.

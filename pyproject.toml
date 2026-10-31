@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evaluation_framework"
+version = "2.0"
+description = "Evaluation Framework for testing and comparing graph embedding techniques"
+readme = "pip_readme.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.8"
+authors = [
+    { name = "Maria Angela Pellegrino", email = "mariaangelapellegrino94@gmail.com" },
+]
+keywords = [
+    "evaluation",
+    "graph-embedding",
+    "python",
+    "library",
+    "benchmark-framework",
+    "machine learning tasks",
+    "semantic tasks",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Build Tools",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "numpy>=1.22",
+    "pandas>=1.0.5",
+    "scipy>=1.5.1",
+    "scikit-learn>=1.2",
+    "h5py>=3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/mariaangelapellegrino/Evaluation-Framework"
+Download = "https://github.com/mariaangelapellegrino/Evaluation-Framework/archive/v_2.0.tar.gz"
+
+[tool.setuptools.packages.find]
+include = ["evaluation_framework*"]
+
+[tool.setuptools.package-data]
+"*" = ["data/*.tsv", "data/*.csv", "data/*.txt", "data/*.json"]

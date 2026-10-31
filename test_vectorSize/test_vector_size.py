@@ -14,7 +14,7 @@ def generate_cropped_files():
         headers.append(i)
 
     vectors_df = pd.read_csv(
-        vector_filename, "\s+", names=headers, encoding="utf-8", index_col=False
+        vector_filename, sep=r"\s+", names=headers, encoding="utf-8", index_col=False
     )
 
     store_path = "test_vectors/"
@@ -54,5 +54,6 @@ def evaluate_cropped_files():
         )
 
 
-generate_cropped_files()
-evaluate_cropped_files()
+if __name__ == "__main__":
+    generate_cropped_files()
+    evaluate_cropped_files()
